@@ -3,10 +3,13 @@ name: Increments semantic version based on the pull request message and creates 
 on:
   pull_request:
     types: [closed]
+    branches:
+      - master
 
 jobs:
   increment_version:
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.merged }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
