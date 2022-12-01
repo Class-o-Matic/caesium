@@ -1,0 +1,88 @@
+  name: Create and publish a Docker Image
+
+on:
+  push:
+    tags:
+      - '**'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-java-jar:
+    runs-on: ubuntu-latest
+    outputs:
+      jarName: ${{ steps.jar.outputs.fileName }}
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v3
+
+      - name: Setup gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Modify the gradle execution flags
+        run: chmod +x ./gradlew
+
+      - name: Run jar build
+        run: ./gradlew buildFatJar -PjarFileName=temp -Psnapshot=false
+
+      - name: Create target directory
+        run: mkdir target/
+
+      - name: Get the jar name
+        id: jar
+        run: ./gradlew printJarName -Psnapshot=false | grep -oP "(?<=Jar file name:\s).*" | awk '{print "fileName=" $1}' >> $GITHUB_OUTPUT
+
+      - name: Move built jar
+        run: mv ./build/libs/temp.jar target/${{ steps.jar.outputs.fileName }}.jar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.jar.outputs.fileName }}
+          path: target/
+
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    needs: build-java-jar
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Download built artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ needs.build-java-jar.outputs.fileName }}
+          path: target/
+
+      - name: Create directories
+        run: mkdir ./build && mkdir ./build/libs
+
+      - name: Move the downloaded artifact to the correct directory
+        run: mv target/${{ needs.build-java-jar.outputs.fileName }}.jar ./build/libs/app.jar
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
