@@ -11,4 +11,6 @@ fun Application.module() {
     configureHTTP()
     configureMonitoring()
     configureSerialization()
+
+    configureAuth()
 }
