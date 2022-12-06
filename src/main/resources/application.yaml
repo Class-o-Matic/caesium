@@ -4,4 +4,8 @@ ktor:
     application:
         modules:
             - io.classomatic.ApplicationKt.module
-            - io.classomatic.modules.classroom.HelloWorldKt.classroomModule
+mongodb:
+    host: localhost
+    port: 27017
+    username: hepl
+    password: hepl

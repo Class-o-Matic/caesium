@@ -1,5 +1,6 @@
 package io.classomatic
 
+import io.classomatic.model.test
 import io.classomatic.plugins.*
 import io.ktor.server.application.*
 
@@ -11,6 +12,8 @@ fun Application.module() {
     configureHTTP()
     configureMonitoring()
     configureSerialization()
+    configureServices()
 
     configureAuth()
+    configureDb()
 }
