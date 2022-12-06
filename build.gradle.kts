@@ -3,6 +3,8 @@ import com.semanticversion.gradle.plugin.SemanticVersionGradlePlugin
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val koin_version: String by project
+val koin_ktor: String by project
 
 group = "io.classomatic"
 version = "0.0.1"
@@ -54,8 +56,14 @@ dependencies {
 
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.8.0")
 
+    implementation("io.insert-koin:koin-core:$koin_version")
+    implementation("io.insert-koin:koin-ktor:$koin_ktor")
+    implementation("io.insert-koin:koin-logger-slf4j:$koin_ktor")
+
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+    testImplementation("io.insert-koin:koin-test:$koin_version")
 }
 
 var jarFileName = "$name-$version"
