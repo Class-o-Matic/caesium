@@ -23,8 +23,9 @@ buildscript {
 plugins {
     application
     kotlin("jvm") version "1.7.21"
+    kotlin("plugin.serialization") version "1.7.21"
+
     id("io.ktor.plugin") version "2.1.3"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.21"
     id("com.dipien.semantic-version") version "1.3.1" apply false
 }
 
@@ -54,11 +55,16 @@ dependencies {
     implementation("io.ktor:ktor-client-core-jvm:2.1.3")
     implementation("io.ktor:ktor-client-apache-jvm:2.1.3")
 
+    implementation("org.litote.kmongo:kmongo:4.8.0")
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.8.0")
 
     implementation("io.insert-koin:koin-core:$koin_version")
     implementation("io.insert-koin:koin-ktor:$koin_ktor")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_ktor")
+
+    implementation("org.mnode.ical4j:ical4j:4.0.0-beta4")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.4.0")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

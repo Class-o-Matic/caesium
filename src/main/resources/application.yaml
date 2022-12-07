@@ -4,6 +4,7 @@ ktor:
     application:
         modules:
             - io.classomatic.ApplicationKt.module
+            - io.classomatic.modules.ClassroomModuleKt.classroomModule
 mongodb:
     host: localhost
     port: 27017
