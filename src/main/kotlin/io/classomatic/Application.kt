@@ -1,6 +1,5 @@
 package io.classomatic
 
-import io.classomatic.model.test
 import io.classomatic.plugins.*
 import io.ktor.server.application.*
 

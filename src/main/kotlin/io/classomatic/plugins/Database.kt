@@ -1,9 +1,14 @@
 package io.classomatic.plugins
 
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
+import com.mongodb.client.MongoClient
+import com.mongodb.client.MongoClients
+import dev.morphia.Morphia
 import io.ktor.server.application.*
+import org.bson.codecs.configuration.CodecRegistries
 import org.koin.dsl.module
 import org.koin.ktor.plugin.koin
-import org.litote.kmongo.reactivestreams.KMongo
 
 fun Application.configureDb() {
     val dbUsername = environment.config.property("mongodb.username").getString()
@@ -15,9 +20,25 @@ fun Application.configureDb() {
 
     koin {
         var dbModule = module {
-            single { KMongo.createClient(conString) }
+            single { createMongo(conString) }
+            single { (realm: String) -> Morphia.createDatastore(get(), realm) }
         }
 
         modules(dbModule)
     }
+}
+
+fun createMongo(conString: String): MongoClient {
+    val codecRegistry = CodecRegistries.fromRegistries(
+        CodecRegistries.fromCodecs(
+        ),
+        MongoClientSettings.getDefaultCodecRegistry()
+    )
+
+    val settings = MongoClientSettings.builder()
+        .codecRegistry(codecRegistry)
+        .applyConnectionString(ConnectionString(conString))
+        .build()
+
+    return MongoClients.create(settings)
 }
