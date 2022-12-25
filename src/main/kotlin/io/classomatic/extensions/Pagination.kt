@@ -1,8 +1,7 @@
 package io.classomatic.extensions
 
-import com.mongodb.reactivestreams.client.MongoCollection
+import com.mongodb.client.MongoCollection
 import kotlinx.serialization.Serializable
-import org.litote.kmongo.coroutine.toList
 
 @Serializable
 data class PaginatedResult<T>(
@@ -12,7 +11,7 @@ data class PaginatedResult<T>(
     val value: List<T> = emptyList()
 )
 
-suspend inline fun <reified T> MongoCollection<T>.getPaginated(
+inline fun <reified T> MongoCollection<T>.getPaginated(
     page: Int,
     limit: Int
 ): PaginatedResult<T> {
