@@ -7,8 +7,8 @@ import io.ktor.server.auth.jwt.*
 import java.net.URL
 
 fun Application.configureAuth() {
-    // TODO: Replace string by properties' url
-    val issuer = URL("http://localhost:18080/realms/ktor/protocol/openid-connect/certs")
+    val issuerURL = environment.config.property("ktor.auth.jwt.issuer").getString()
+    val issuer = URL(issuerURL)
 
     val jwksProvider = JwkProviderBuilder(issuer)
         .build()
