@@ -70,14 +70,14 @@ jobs:
       - name: Download built artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ needs.build-java-jar.outputs.fileName }}
+          name: ${{ needs.build-java-jar.outputs.jarName }}
           path: target/
 
       - name: Create directories
         run: mkdir ./build && mkdir ./build/libs
 
       - name: Move the downloaded artifact to the correct directory
-        run: mv target/${{ needs.build-java-jar.outputs.fileName }}.jar ./build/libs/app.jar
+        run: mv target/${{ needs.build-java-jar.outputs.jarName }}.jar ./build/libs/app.jar
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
