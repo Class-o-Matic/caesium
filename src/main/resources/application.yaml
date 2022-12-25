@@ -7,8 +7,9 @@ ktor:
             - io.classomatic.ApplicationKt.module
             - io.classomatic.modules.ClassroomModuleKt.classroomModule
             - io.classomatic.modules.SensorModuleKt.sensorModule
-    jwt:
-        issuer: $JWT_ISSUER
+    auth:
+        jwt:
+            issuer: $JWT_ISSUER
 mongodb:
     host: $DB_HOST
     port: $DB_PORT
