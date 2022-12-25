@@ -7,7 +7,7 @@ val koin_version: String by project
 val koin_ktor: String by project
 
 group = "io.classomatic"
-version = "0.0.1"
+version = "0.1.1"
 apply<SemanticVersionGradlePlugin>()
 
 buildscript {
