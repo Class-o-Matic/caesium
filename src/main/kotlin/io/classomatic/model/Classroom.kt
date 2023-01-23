@@ -20,6 +20,6 @@ data class Classroom(
     val name: String? = null,
 
     @Name("raspberry")
-    @Reference(idOnly = true, lazy = true)
+    @Reference(idOnly = true)
     val sensors: List<Sensor> = emptyList()
 ): IdObject

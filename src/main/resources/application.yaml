@@ -5,8 +5,6 @@ ktor:
     application:
         modules:
             - io.classomatic.ApplicationKt.module
-            - io.classomatic.modules.ClassroomModuleKt.classroomModule
-            - io.classomatic.modules.SensorModuleKt.sensorModule
     auth:
         jwt:
             issuer: $JWT_ISSUER

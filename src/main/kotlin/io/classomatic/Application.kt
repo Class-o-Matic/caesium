@@ -1,5 +1,8 @@
 package io.classomatic
 
+import io.classomatic.modules.classroomModule
+import io.classomatic.modules.reservationModule
+import io.classomatic.modules.sensorModule
 import io.classomatic.plugins.*
 import io.ktor.server.application.*
 
@@ -15,4 +18,8 @@ fun Application.module() {
 
     configureAuth()
     configureDb()
+
+    classroomModule()
+    sensorModule()
+    reservationModule()
 }
