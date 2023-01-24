@@ -66,7 +66,7 @@ inline fun <reified T: IdObject> Application.basicModelModule(canBeListed: Boole
                 call.respond(HttpStatusCode.OK)
             }
 
-            patch("/api/classroom/{id}") {
+            patch("/api/$routeName/{id}") {
                 val updateModel = call.receive<T>()
                 val id = call.parameters["id"]
 
